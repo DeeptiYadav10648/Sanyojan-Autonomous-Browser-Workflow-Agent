@@ -1,0 +1,13 @@
+{
+  "name": "sanyojan",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": ["frontend"],
+  "engines": {"node": ">=24.19.0 <25"},
+  "scripts": {
+    "dev": "npm run dev --workspace @sanyojan/frontend",
+    "build": "npm run build --workspace @sanyojan/frontend",
+    "test": "node scripts/check.mjs",
+    "test:frontend": "npm test --workspace @sanyojan/frontend"
+  }
+}

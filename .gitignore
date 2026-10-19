@@ -1,0 +1,15 @@
+.venv/
+.env
+!.env.example
+node_modules/
+frontend/dist/
+*.tsbuildinfo
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+data/
+reports/
+test-results/
+*.log
+.DS_Store
