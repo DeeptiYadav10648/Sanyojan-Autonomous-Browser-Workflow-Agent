@@ -1,0 +1,28 @@
+services:
+  sanyojan:
+    image: sanyojan:local
+    build:
+      context: .
+      target: runtime
+    env_file:
+      - .env
+    environment:
+      SANYOJAN_DATABASE_PATH: data/tasks.sqlite3
+      SANYOJAN_REPORTS_DIR: data/reports
+      SANYOJAN_FRONTEND_DIR: frontend/dist
+      SANYOJAN_HEADLESS: "true"
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - sanyojan-data:/app/data
+    init: true
+    shm_size: "1gb"
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 30s
+    restart: unless-stopped
+
+volumes:
+  sanyojan-data:

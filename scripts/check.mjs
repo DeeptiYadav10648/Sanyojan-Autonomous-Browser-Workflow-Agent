@@ -3,6 +3,8 @@ import { spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 
+process.env.PLAYWRIGHT_BROWSERS_PATH ||= '0';
+
 const python = process.env.SANYOJAN_TEST_PYTHON ||
   path.join('.venv', process.platform === 'win32' ? 'Scripts/python.exe' : 'bin/python');
 if (!existsSync(python)) {

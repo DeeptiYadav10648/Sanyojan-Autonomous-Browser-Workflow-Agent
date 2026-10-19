@@ -3,9 +3,12 @@
 import argparse
 import asyncio
 import json
+import os
 from pathlib import Path
 
 from playwright.async_api import async_playwright, expect
+
+os.environ.setdefault("PLAYWRIGHT_BROWSERS_PATH", "0")
 
 
 async def main(base):
@@ -25,12 +28,9 @@ async def main(base):
             await page.screenshot(path=output / "demo-desktop.png", full_page=True)
             await page.set_viewport_size({"width": 390, "height": 844})
             await page.screenshot(path=output / "demo-mobile.png", full_page=True)
-            overflow = await page.evaluate("""() => [...document.querySelectorAll('body *')]
-              .filter(e => e.getBoundingClientRect().right > innerWidth + 1)
-              .map(e => ({tag:e.tagName, cls:e.className, right:e.getBoundingClientRect().right, width:e.getBoundingClientRect().width}))
-              .slice(0, 20)""")
             metrics = await page.evaluate("({innerWidth,scrollWidth:document.documentElement.scrollWidth,body:document.body.scrollWidth,scrollX,scrollY})")
-            print(json.dumps({"demo": "SUCCEEDED", "screenshots": str(output), "mobile_metrics": metrics, "mobile_overflow": overflow}, indent=2))
+            assert metrics["scrollWidth"] <= metrics["innerWidth"], "The mobile layout overflows the viewport"
+            print(json.dumps({"demo": "SUCCEEDED", "screenshots": str(output), "mobile_fits": True, "mobile_metrics": metrics}, indent=2))
         finally:
             await browser.close()
 
